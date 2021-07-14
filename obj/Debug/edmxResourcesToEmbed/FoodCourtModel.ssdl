@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FoodCourtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BillMaster">
+    <Key>
+      <PropertyRef Name="BMId" />
+    </Key>
+    <Property Name="BMId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TotalSales" Type="int" Nullable="false" />
+    <Property Name="TotalAmount" Type="int" Nullable="false" />
+    <Property Name="BDate" Type="date" Nullable="false" />
+    <Property Name="EId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BillTrans">
+    <Key>
+      <PropertyRef Name="BillId" />
+    </Key>
+    <Property Name="BillId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BMId" Type="int" Nullable="false" />
+    <Property Name="ItemNo" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EId" />
+    </Key>
+    <Property Name="EId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmpName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PhoneNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="Hint" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsAdmin" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ItemMaster">
+    <Key>
+      <PropertyRef Name="ItemTypeNo" />
+    </Key>
+    <Property Name="ItemTypeNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ItemType" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Items">
+    <Key>
+      <PropertyRef Name="ItemNo" />
+    </Key>
+    <Property Name="ItemNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ItemName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="ItemTypeNo" Type="int" Nullable="false" />
+    <Property Name="ItemQuantity" Type="int" Nullable="false" />
+    <Property Name="ItemPrice" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StockTrans">
+    <Key>
+      <PropertyRef Name="TransId" />
+    </Key>
+    <Property Name="TransId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ItemNo" Type="int" Nullable="false" />
+    <Property Name="StockQuantity" Type="int" Nullable="false" />
+    <Property Name="StockAmount" Type="int" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__BillMaster__EId__6D0D32F4">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="BillMaster" Type="Self.BillMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EId" />
+      </Principal>
+      <Dependent Role="BillMaster">
+        <PropertyRef Name="EId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BillTrans__BMId__6FE99F9F">
+    <End Role="BillMaster" Type="Self.BillMaster" Multiplicity="1" />
+    <End Role="BillTrans" Type="Self.BillTrans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BillMaster">
+        <PropertyRef Name="BMId" />
+      </Principal>
+      <Dependent Role="BillTrans">
+        <PropertyRef Name="BMId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BillTrans__ItemN__70DDC3D8">
+    <End Role="Items" Type="Self.Items" Multiplicity="1" />
+    <End Role="BillTrans" Type="Self.BillTrans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="ItemNo" />
+      </Principal>
+      <Dependent Role="BillTrans">
+        <PropertyRef Name="ItemNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Items__ItemTypeN__5FB337D6">
+    <End Role="ItemMaster" Type="Self.ItemMaster" Multiplicity="1" />
+    <End Role="Items" Type="Self.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ItemMaster">
+        <PropertyRef Name="ItemTypeNo" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="ItemTypeNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__ItemN__628FA481">
+    <End Role="Items" Type="Self.Items" Multiplicity="1" />
+    <End Role="StockTrans" Type="Self.StockTrans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="ItemNo" />
+      </Principal>
+      <Dependent Role="StockTrans">
+        <PropertyRef Name="ItemNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FoodCourtModelStoreContainer">
+    <EntitySet Name="BillMaster" EntityType="Self.BillMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BillTrans" EntityType="Self.BillTrans" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ItemMaster" EntityType="Self.ItemMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StockTrans" EntityType="Self.StockTrans" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__BillMaster__EId__6D0D32F4" Association="Self.FK__BillMaster__EId__6D0D32F4">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="BillMaster" EntitySet="BillMaster" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BillTrans__BMId__6FE99F9F" Association="Self.FK__BillTrans__BMId__6FE99F9F">
+      <End Role="BillMaster" EntitySet="BillMaster" />
+      <End Role="BillTrans" EntitySet="BillTrans" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BillTrans__ItemN__70DDC3D8" Association="Self.FK__BillTrans__ItemN__70DDC3D8">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="BillTrans" EntitySet="BillTrans" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Items__ItemTypeN__5FB337D6" Association="Self.FK__Items__ItemTypeN__5FB337D6">
+      <End Role="ItemMaster" EntitySet="ItemMaster" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__ItemN__628FA481" Association="Self.FK__StockTran__ItemN__628FA481">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="StockTrans" EntitySet="StockTrans" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

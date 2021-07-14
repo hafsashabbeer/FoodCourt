@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FoodCourtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BillMaster">
+    <Key>
+      <PropertyRef Name="BMId" />
+    </Key>
+    <Property Name="BMId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TotalSales" Type="Int32" Nullable="false" />
+    <Property Name="TotalAmount" Type="Int32" Nullable="false" />
+    <Property Name="BDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK__BillMaster__EId__6D0D32F4" FromRole="BillMaster" ToRole="Employee" />
+    <NavigationProperty Name="BillTrans" Relationship="Self.FK__BillTrans__BMId__6FE99F9F" FromRole="BillMaster" ToRole="BillTrans" />
+  </EntityType>
+  <EntityType Name="BillTran">
+    <Key>
+      <PropertyRef Name="BillId" />
+    </Key>
+    <Property Name="BillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BMId" Type="Int32" Nullable="false" />
+    <Property Name="ItemNo" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BillMaster" Relationship="Self.FK__BillTrans__BMId__6FE99F9F" FromRole="BillTrans" ToRole="BillMaster" />
+    <NavigationProperty Name="Item" Relationship="Self.FK__BillTrans__ItemN__70DDC3D8" FromRole="BillTrans" ToRole="Items" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EId" />
+    </Key>
+    <Property Name="EId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmpName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Hint" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsAdmin" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BillMasters" Relationship="Self.FK__BillMaster__EId__6D0D32F4" FromRole="Employee" ToRole="BillMaster" />
+  </EntityType>
+  <EntityType Name="ItemMaster">
+    <Key>
+      <PropertyRef Name="ItemTypeNo" />
+    </Key>
+    <Property Name="ItemTypeNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ItemType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Items" Relationship="Self.FK__Items__ItemTypeN__5FB337D6" FromRole="ItemMaster" ToRole="Items" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="ItemNo" />
+    </Key>
+    <Property Name="ItemNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ItemName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ItemTypeNo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BillTrans" Relationship="Self.FK__BillTrans__ItemN__70DDC3D8" FromRole="Items" ToRole="BillTrans" />
+    <NavigationProperty Name="ItemMaster" Relationship="Self.FK__Items__ItemTypeN__5FB337D6" FromRole="Items" ToRole="ItemMaster" />
+    <NavigationProperty Name="StockTrans" Relationship="Self.FK__StockTran__ItemN__628FA481" FromRole="Items" ToRole="StockTrans" />
+    <Property Name="ItemQuantity" Type="Int32" Nullable="false" />
+    <Property Name="ItemPrice" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StockTran">
+    <Key>
+      <PropertyRef Name="TransId" />
+    </Key>
+    <Property Name="TransId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ItemNo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Item" Relationship="Self.FK__StockTran__ItemN__628FA481" FromRole="StockTrans" ToRole="Items" />
+    <Property Name="StockQuantity" Type="Int32" Nullable="false" />
+    <Property Name="StockAmount" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <Association Name="FK__BillMaster__EId__6D0D32F4">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="BillMaster" Type="Self.BillMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EId" />
+      </Principal>
+      <Dependent Role="BillMaster">
+        <PropertyRef Name="EId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BillTrans__BMId__6FE99F9F">
+    <End Role="BillMaster" Type="Self.BillMaster" Multiplicity="1" />
+    <End Role="BillTrans" Type="Self.BillTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BillMaster">
+        <PropertyRef Name="BMId" />
+      </Principal>
+      <Dependent Role="BillTrans">
+        <PropertyRef Name="BMId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BillTrans__ItemN__70DDC3D8">
+    <End Role="Items" Type="Self.Item" Multiplicity="1" />
+    <End Role="BillTrans" Type="Self.BillTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="ItemNo" />
+      </Principal>
+      <Dependent Role="BillTrans">
+        <PropertyRef Name="ItemNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Items__ItemTypeN__5FB337D6">
+    <End Role="ItemMaster" Type="Self.ItemMaster" Multiplicity="1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ItemMaster">
+        <PropertyRef Name="ItemTypeNo" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="ItemTypeNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__ItemN__628FA481">
+    <End Role="Items" Type="Self.Item" Multiplicity="1" />
+    <End Role="StockTrans" Type="Self.StockTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="ItemNo" />
+      </Principal>
+      <Dependent Role="StockTrans">
+        <PropertyRef Name="ItemNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FoodCourtEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BillMasters" EntityType="Self.BillMaster" />
+    <EntitySet Name="BillTrans" EntityType="Self.BillTran" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="ItemMasters" EntityType="Self.ItemMaster" />
+    <EntitySet Name="Items" EntityType="Self.Item" />
+    <EntitySet Name="StockTrans" EntityType="Self.StockTran" />
+    <AssociationSet Name="FK__BillMaster__EId__6D0D32F4" Association="Self.FK__BillMaster__EId__6D0D32F4">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="BillMaster" EntitySet="BillMasters" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BillTrans__BMId__6FE99F9F" Association="Self.FK__BillTrans__BMId__6FE99F9F">
+      <End Role="BillMaster" EntitySet="BillMasters" />
+      <End Role="BillTrans" EntitySet="BillTrans" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BillTrans__ItemN__70DDC3D8" Association="Self.FK__BillTrans__ItemN__70DDC3D8">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="BillTrans" EntitySet="BillTrans" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Items__ItemTypeN__5FB337D6" Association="Self.FK__Items__ItemTypeN__5FB337D6">
+      <End Role="ItemMaster" EntitySet="ItemMasters" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__ItemN__628FA481" Association="Self.FK__StockTran__ItemN__628FA481">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="StockTrans" EntitySet="StockTrans" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

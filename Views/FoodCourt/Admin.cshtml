@@ -1,0 +1,29 @@
+﻿@model FoodCourt.Employee
+
+@{
+    ViewBag.Title = "Admin";
+}
+<h2>Food Court</h2>
+
+<h4>Admin Page</h4>
+
+@using (Html.BeginForm("Admin", "FoodCourt", FormMethod.Post))
+{
+    <br />
+    <table>
+        <tr>
+            <td>@Html.Label("UserName")</td>
+            <td>@Html.TextBoxFor(Model => Model.UserName)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Password")</td>
+            <td>@Html.PasswordFor(Model => Model.Password)</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Login" /></td>
+        </tr>
+    </table>
+
+    <h3>@TempData["message"]</h3>
+}
+
