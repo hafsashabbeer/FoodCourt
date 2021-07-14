@@ -113,6 +113,7 @@ namespace FoodCourt.Controllers
             ViewData["ItemTypes"] = liItemTypes;
             return View(m);
         }
+        
         [HttpPost]
         public ActionResult AddItemName(Item m1)
         {
@@ -164,7 +165,6 @@ namespace FoodCourt.Controllers
 
             return View(s);
         }
-
         public JsonResult GetItemNames(int id)
         {
             var itemName = foodCourt.Items.Where(x => x.ItemTypeNo == id);
@@ -176,6 +176,45 @@ namespace FoodCourt.Controllers
             }
             return Json(new SelectList(liItemName, "Value", "Text", JsonRequestBehavior.AllowGet));                      
         }
+
+        [HttpPost]
+        public ActionResult UpdateStock(StockTran s1)
+        {
+            if(ModelState.IsValid)
+            {
+                StockTran s2 = new StockTran();
+                
+                s2.TransId = s1.TransId;
+                s2.ItemNo = s1.ItemNo;
+                s2.StockQuantity = s1.StockQuantity;
+                s2.StockAmount = s1.StockAmount;
+                s2.Date = DateTime.Today;
+
+                var itemNo = foodCourt.Items.Where(i => i.ItemNo.Equals(s1.ItemNo));
+
+                foreach (var item in itemNo)
+                {
+                    item.ItemQuantity = s1.StockQuantity;
+                    item.ItemPrice = s1.StockAmount;
+                }
+
+                foodCourt.StockTrans.Add(s2);
+                foodCourt.SaveChanges();
+
+
+                if (s2.TransId > 0)
+                {
+                    TempData["message"] = "Data Inserted";
+                }
+                else
+                {
+                    TempData["message"] = "Invalid Data";
+                }
+            }
+               return RedirectToAction("UpdateStock");
+        }
+        
+        
         #endregion
     }
 }
