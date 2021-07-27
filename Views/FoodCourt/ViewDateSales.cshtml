@@ -1,0 +1,26 @@
+﻿@model FoodCourt.BillTran
+
+@{
+    ViewBag.Title = "ViewDateSales";
+}
+
+<h2>ViewDateSales</h2>
+
+
+@using (Html.BeginForm("ViewDateSales", "FoodCourt", FormMethod.Post))
+{
+    @Html.Label("Enter Date")
+    <br />
+    <span>(YYYY/MM/DD)</span>
+    <br />
+    @Html.TextBoxFor(Model => Model.BillMaster.BDate)
+    <br />
+    <br />
+    <input type="submit" value="View" />
+
+    <br />
+    <div>
+        @Html.Action("DateSales")
+    </div>
+
+}

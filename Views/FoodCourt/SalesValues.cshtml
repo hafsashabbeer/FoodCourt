@@ -1,0 +1,41 @@
+﻿@{ 
+    Layout = null;
+}
+@model IEnumerable<FoodCourt.BillTran>
+
+<table class="table">
+    <tr>
+           <th>SalesId </th>
+           <th>BMId </th>
+           <th>ItemNo </th>
+           <th>Quantity </th>
+           <th>Cost</th>
+            
+    </tr>
+
+    @if (Model!=null)
+    {
+
+foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BMId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        
+    </tr>
+}
+    }
+</table>

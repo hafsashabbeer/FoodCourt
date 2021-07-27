@@ -1,0 +1,46 @@
+﻿@model IEnumerable<FoodCourt.Models.DateToDateSalesList>
+
+@{ 
+    Layout = null;
+}
+
+@if (Model != null)
+{
+<table class="table">
+    <tr>
+        <th>BillNumber  </th>
+        <th>Type    </th>
+        <th>Name    </th>
+        <th>Amount  </th>
+        <th>Date    </th>
+        <th>Employee    </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpName)
+        </td>
+        
+    </tr>
+}
+    
+</table>
+<p>Total sales amount of the date @Session["Date"] is @Session["TotAmt"]</p>
+}

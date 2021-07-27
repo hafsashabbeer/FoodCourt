@@ -1,0 +1,88 @@
+﻿@model FoodCourt.Item
+
+@{
+    ViewBag.Title = "ViewStock";
+}
+
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ItemTypeNo").change(function () {
+                $("#ItemNo").empty();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetItemName")',
+                    datatype: 'JSON',
+                    data: { id: $("#ItemTypeNo").val() },
+                    success: function (ItemNames) {
+                        //  debugger;
+                        $.each(ItemNames, function (i, Item) {
+                            $("#ItemNo").append('<option value="' + Item.Value + '">' + Item.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert("Failed to retrieve Item Names." + ex);
+                    }
+
+                });
+                return false;
+            })
+        });
+
+    </script>
+}
+
+
+<h2>View Stock Details</h2>
+
+@using (Html.BeginForm("ViewStock","FoodCourt",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @if (TempData["Quantity"] == null && TempData["Price"] == null)
+    {
+    <div class="form-group">
+        @Html.Label("Type")
+        <div class="col-md-10">
+            @Html.DropDownList("ItemTypeNo", ViewData["ItemTypes"] as List<SelectListItem>)
+            @Html.ValidationMessageFor(model => model.ItemTypeNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group">
+        @Html.Label("Name")
+        <div class="col-md-10">
+            @Html.DropDownList("ItemNo", new SelectList(new SelectList(string.Empty, "Value", "Text"), "Select Name"))
+            @Html.ValidationMessageFor(model => model.ItemNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <input type="submit" value="View" />
+    }
+    <br />
+    <h4>@TempData["Quantity"]</h4>
+    <h4>@TempData["Price"]</h4>
+
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Cancel" onclick="window.location.href = '@Url.Action("WelcomeUser", "FoodCourt")'" />
+            <input type="button" value="Make Sales" onclick="window.location.href = '@Url.Action("MakeSales", "FoodCourt")'" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    <input type="button" value="Back" onclick="window.location.href = '@Url.Action("Viewstock", "FoodCourt")'" />
+</div>

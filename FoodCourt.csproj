@@ -147,7 +147,10 @@
     <Compile Include="ItemMaster.cs">
       <DependentUpon>FoodCourtModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ItemValidation.cs" />
+    <Compile Include="Models\BillValues.cs" />
+    <Compile Include="Models\DateToDateSalesList.cs" />
+    <Compile Include="Models\FinalBill.cs" />
+    <Compile Include="Models\SalesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockTran.cs">
       <DependentUpon>FoodCourtModel.tt</DependentUpon>
@@ -171,6 +174,18 @@
     <Content Include="Views\FoodCourt\AddItemTypes.cshtml" />
     <Content Include="Views\FoodCourt\AddItemName.cshtml" />
     <Content Include="Views\FoodCourt\UpdateStock.cshtml" />
+    <Content Include="Views\FoodCourt\AddEmployees.cshtml" />
+    <Content Include="Views\FoodCourt\ForgetPassword.cshtml" />
+    <Content Include="Views\FoodCourt\WelcomeUser.cshtml" />
+    <Content Include="Views\FoodCourt\ViewStock.cshtml" />
+    <Content Include="Views\FoodCourt\MakeSales.cshtml" />
+    <Content Include="Views\FoodCourt\SalesValues.cshtml" />
+    <Content Include="Views\FoodCourt\GenerateBill.cshtml" />
+    <Content Include="Views\FoodCourt\DateSales.cshtml" />
+    <Content Include="Views\FoodCourt\DateToDateList.cshtml" />
+    <Content Include="Views\FoodCourt\DateToDateSales.cshtml" />
+    <Content Include="Views\FoodCourt\ViewDateSales.cshtml" />
+    <Content Include="Views\FoodCourt\ViewSales.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

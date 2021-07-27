@@ -1,0 +1,160 @@
+﻿@model FoodCourt.BillTran
+
+@{
+    ViewBag.Title = "MakeSales";
+}
+
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ItemTypeNo").change(function () {
+                $("#ItemNo").empty();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DisplayItemName")',
+                    datatype: 'JSON',
+                    data: { id: $("#ItemTypeNo").val() },
+                    success: function (ItemNames) {
+                        //  debugger;
+                        $.each(ItemNames, function (i, Item) {
+                            $("#ItemNo").append('<option value="' + Item.Value + '">' + Item.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert("Failed to retrieve Item Names." + ex);
+                    }
+
+                });
+                return false;
+            })
+        });
+
+
+        $(document).ready(function () {
+            $("#ItemNo").change(function () {
+                //debugger;
+                var ServiceUrl = "/FoodCourt/Price?id=" + $(this).val();
+                var content = '';
+                $.support.cors = true;
+                $.ajax({
+                    type: 'GET',
+                    url: ServiceUrl,
+                    async: true,
+                    cache: false,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    error: function (xhr, err) {
+                    //    debugger;
+                    },
+                    success: function (result, status) {
+                        debugger;
+                        $('#Item_ItemPrice').val(result.Value);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("#Quantity").on('input',function () {
+                debugger;
+                var ServiceUrl = "/FoodCourt/TotalAmount?price=" + $('#Item_ItemPrice').val() + "&quantity=" + $(this).val();
+                var content = '';
+                $.support.cors = true;
+                $.ajax({
+                    type: 'GET',
+                    url: ServiceUrl,
+                    async: true,
+                    cache: false,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    error: function (xhr, err) {
+                        debugger;
+                    },
+                    success: function (result, status) {
+                        debugger;
+                        $('#Amount').val(result.Value);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<h2>Make Sales</h2>
+
+@using (Html.BeginForm("MakeSales", "FoodCourt", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.Label("Type")
+        <div class="col-md-10">
+            @Html.DropDownList("ItemTypeNo", ViewData["ItemTypes"] as List<SelectListItem>)
+            @Html.ValidationMessageFor(model => model.Item.ItemTypeNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group">
+        @Html.Label("Name")
+        <div class="col-md-10">
+            @Html.DropDownList("ItemNo", new SelectList(new SelectList(string.Empty, "Value", "Text"), "Select Name"))
+            @Html.ValidationMessageFor(model => model.ItemNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group">
+        @Html.Label("Price")
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Item.ItemPrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Item.ItemPrice, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group">
+        @Html.Label("Total Amount")
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Continue"id="Continue" />
+            <input type="button" value="Generate Bill" onclick="window.location.href = '@Url.Action("GenerateBill", "FoodCourt")'" />
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<div>
+    
+        @Html.Action("SalesValues","FoodCourt");
+</div>
+
+<p>@Session["TotalAmt"]</p>
+}
+

@@ -1,0 +1,36 @@
+﻿@model FoodCourt.Models.DateToDateSalesList
+
+@{
+    ViewBag.Title = "DateToDateSales";
+}
+
+<h2>DateToDateSales</h2>
+
+@using (Html.BeginForm("DateToDateSales", "FoodCourt", FormMethod.Post))
+{
+    @Html.Label("From Date")
+    <br />
+    <span>(YYYY/MM/DD)</span>
+    <br />
+    @Html.TextBoxFor(Model => Model.FromDate)
+    <br />
+    <br />
+    @Html.Label("Till Date")
+    <br />
+    <span>(YYYY/MM/DD)</span>
+    <br />
+    @Html.TextBoxFor(Model => Model.TillDate)
+    <br />
+    <br />
+
+    <input type="submit" value="View" />
+
+    <br />
+    <div>
+        @Html.Action("DateToDateList")
+    </div>
+
+}
+
+
+

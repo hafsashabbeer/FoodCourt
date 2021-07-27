@@ -133,6 +133,34 @@ SELECT * FROM ItemMaster
 
 SELECT * FROM Items
 
+SELECT * FROM BillMaster
+
+SELECT * FROM BillTrans
+
 SELECT * FROM StockTrans
 
+DROP PROC SpGetEmpId
+CREATE PROCEDURE SpGetEmpId
+AS
+BEGIN
+	IF (NOT EXISTS (SELECT 1 FROM Employee))
+	BEGIN
+		SELECT CAST(IDENT_CURRENT('Employee') AS INT) AS 'EId' ,Null AS 'EmpName', Null AS 'UserName', Null AS 'Password', Null AS 'Address', Null AS 'PhoneNumber',Null AS 'Hint', CAST(0 AS INT) AS 'IsAdmin'
+	END
+	ELSE
+	BEGIN
+		SELECT CAST(IDENT_CURRENT('Employee') + IDENT_INCR('Employee') AS INT) AS 'EId', Null AS 'EmpName', Null AS 'UserName', Null AS 'Password', Null AS 'Address', Null AS 'PhoneNumber',Null AS 'Hint', CAST(0 AS INT) AS 'IsAdmin'
+	END
+END
 
+EXEC SpGetEmpId
+
+Update Items
+Set
+ItemPrice = 12000
+Where ItemNo = 204
+
+
+
+DELETE FROM BillMaster
+DELETE FROM BillTrans

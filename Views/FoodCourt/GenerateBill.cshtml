@@ -1,0 +1,45 @@
+﻿@model IEnumerable<FoodCourt.Models.FinalBill>
+
+<h2>BILL</h2>
+<br />
+<p>Date @Session["Date"]</p>
+<p>Bill Number @Session["BMId"]</p>
+
+<table class="table">
+    <tr>
+        <th>Number </th>
+        <th>ItemName </th>
+        <th>Price </th>
+        <th>Quantity </th>
+        <th>Amount</th>
+
+    </tr>
+
+    @if (Model != null)
+    {
+
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+
+            </tr>
+        }
+    }
+</table>
+
+<p>Total Amount is @Session["TotalAmt"]</p>

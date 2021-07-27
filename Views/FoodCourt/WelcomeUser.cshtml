@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "WelcomeUser";
+}
+
+@Html.ActionLink("View Stock","ViewStock","FoodCourt")
+<br />
+<br />
+@Html.ActionLink("Make Sales","MakeSales","FoodCourt")
+<br />
+<br />
+@Html.ActionLink("Logout","User","FoodCourt")
+
+<br />
+<br />
+<h2>Welcome @TempData["Name"]</h2>
+

@@ -18,7 +18,6 @@
     @Html.Label("Number")
     <div>
         @Html.TextBoxFor(model => model.ItemNo, new { @readonly = "readonly", htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.ItemNo, "", new { @class = "text-danger" })
     </div>
     <br />
     <div class="form-group">
@@ -62,5 +61,5 @@
 <h4>@TempData["message"]</h4>
 
 <div>
-    @Html.ActionLink("Back to List", "WelcomeAdmin")
+    <input type="button" value="Back" onclick="window.location.href = '@Url.Action("WelcomeAdmin", "FoodCourt")'" />
 </div>
