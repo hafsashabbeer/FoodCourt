@@ -14,10 +14,10 @@ Functional Requirements: Admin can manage the Food and Beverage details.
           Monthly Reports
           
  Languages and Technologies Used: C#, Entity Framework
- 
+ Library : JQuery
  Backend: MS SQL Server
  
  Tools: Microsoft Visual Studio Editor-2019
         DotNet Framework
         
- Not Completed Currently Working on it...
+ 
